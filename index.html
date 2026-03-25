@@ -1,3 +1,610 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>La Cocina de Mónica</title><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"><style>:root{--bg:#0E0C08;--bg2:#161310;--gold:#C9A84C;--gold-lt:#E8CC7A;--gold-dk:#8A6820;--cream:#F2E8D0;--muted:#7A6A4A;--border:rgba(201,168,76,0.2);--red:#C0392B;--green:#1A6B3A;}*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--cream);font-family:'Cormorant Garamond',serif;overflow-x:hidden}#edit-toggle{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--gold);color:#0E0C08;border:none;border-radius:50px;padding:12px 22px;font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.15em;cursor:pointer;box-shadow:0 4px 20px rgba(201,168,76,0.4);transition:all 0.2s;}#edit-toggle:hover{background:var(--gold-lt);transform:translateY(-2px)}#editor{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;}#editor.open{display:flex}#editor-box{background:#1A1610;border:1px solid var(--gold-dk);border-radius:12px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;padding:28px;}#editor-box h2{font-family:'Cinzel',serif;font-size:1.1rem;letter-spacing:0.2em;color:var(--gold-lt);margin-bottom:6px;}#editor-box .ed-sub{font-style:italic;color:var(--muted);font-size:0.88rem;margin-bottom:24px}.ed-section{margin-bottom:22px}.ed-section h3{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border);}.ed-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}.ed-row.full{grid-template-columns:1fr}.ed-field label{display:block;font-size:0.75rem;color:var(--muted);margin-bottom:4px;font-style:italic}.ed-field input,.ed-field textarea{width:100%;background:#0E0C08;border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:0.95rem;outline:none;transition:border 0.2s;}.ed-field input:focus,.ed-field textarea:focus{border-color:var(--gold)}.ed-field textarea{resize:vertical;min-height:60px}.ed-btn-row{display:flex;gap:10px;margin-top:20px;justify-content:flex-end}.ed-btn{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.15em;padding:10px 20px;border-radius:6px;cursor:pointer;border:none;transition:all 0.2s;}.ed-btn.save{background:var(--gold);color:#0E0C08}.ed-btn.save:hover{background:var(--gold-lt)}.ed-btn.cancel{background:transparent;border:1px solid var(--border);color:var(--muted)}.ed-btn.cancel:hover{border-color:var(--gold);color:var(--cream)}.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;overflow:hidden;}.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(201,168,76,0.08) 0%,transparent 65%);}.hero-flag{display:flex;justify-content:center;gap:0;margin-bottom:1.5rem}.hero-flag span{display:block;width:50px;height:5px;border-radius:2px}.hero-eyebrow{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.4em;color:var(--gold-dk);text-transform:uppercase;margin-bottom:1rem;}.hero-title{font-family:'Cinzel',serif;font-weight:600;font-size:clamp(3rem,10vw,6.5rem);letter-spacing:0.12em;color:var(--gold-lt);line-height:1;text-shadow:0 0 60px rgba(201,168,76,0.2);margin-bottom:0.8rem;}.hero-sub{font-style:italic;font-weight:300;font-size:clamp(1.1rem,3vw,1.6rem);color:var(--muted);letter-spacing:0.06em;margin-bottom:2rem;}.hero-divider{width:120px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:0 auto 2rem;}.hero-info{display:flex;gap:2.5rem;flex-wrap:wrap;justify-content:center;font-size:0.9rem;color:var(--muted);}.hero-info span{display:flex;align-items:center;gap:0.4rem}.hero-cta{margin-top:2.5rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}.btn-primary{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;padding:14px 32px;background:var(--gold);color:#0E0C08;border:none;border-radius:3px;cursor:pointer;transition:all 0.25s;text-decoration:none;display:inline-block;}.btn-primary:hover{background:var(--gold-lt);transform:translateY(-2px)}.btn-outline{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;padding:13px 32px;background:transparent;color:var(--gold);border:1px solid var(--gold-dk);border-radius:3px;cursor:pointer;transition:all 0.25s;text-decoration:none;display:inline-block;}.btn-outline:hover{border-color:var(--gold);color:var(--gold-lt)}nav{position:sticky;top:0;z-index:100;background:rgba(14,12,8,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0.7rem 1rem;}.nav-inner{max-width:900px;margin:0 auto;display:flex;justify-content:center;flex-wrap:wrap;gap:0.2rem;}nav a{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--muted);text-decoration:none;padding:0.4rem 0.9rem;border-radius:2px;transition:color 0.2s,background 0.2s;}nav a:hover{color:var(--gold-lt);background:rgba(201,168,76,0.08)}.nav-dot{color:var(--border);display:flex;align-items:center;font-size:0.5rem}section{padding:5rem 1.5rem}.sec-inner{max-width:900px;margin:0 auto}.sec-eyebrow{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.35em;color:var(--gold-dk);text-transform:uppercase;text-align:center;margin-bottom:0.8rem;}.sec-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,5vw,2.4rem);letter-spacing:0.15em;color:var(--gold-lt);text-align:center;margin-bottom:0.5rem;}.sec-rule{width:100px;height:1px;margin:0 auto 3rem;background:linear-gradient(to right,transparent,var(--gold),transparent);}#menu{background:var(--bg)}.menu-section-hdr{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;padding-bottom:0.4rem;border-bottom:1px solid var(--border);}.menu-num{font-family:'Cinzel',serif;font-size:0.6rem;color:var(--gold-dk);letter-spacing:0.15em}.menu-cat-title{font-family:'Cinzel',serif;font-size:0.95rem;letter-spacing:0.18em;color:var(--gold)}.menu-rule{flex:1;height:1px;background:rgba(201,168,76,0.1)}.menu-items{margin-bottom:2rem}.menu-group-label{font-style:italic;font-size:0.82rem;color:var(--muted);letter-spacing:0.1em;margin:0.8rem 0 0.4rem 0.5rem;}.menu-variants{display:flex;flex-wrap:wrap;gap:0.4rem 1.4rem;padding:0.3rem 0 0.6rem 1rem;border-left:1px solid rgba(201,168,76,0.15);margin-left:0.4rem;}.menu-variant{font-size:1rem;color:var(--cream);opacity:0.88}.menu-variant.special{color:var(--gold-lt);font-style:italic}.menu-item-row{display:flex;align-items:baseline;padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.06);}.menu-item-row:last-child{border-bottom:none}.menu-item-name{font-size:1.05rem;color:var(--cream);flex:1}.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;}#galeria{background:var(--bg2)}.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}.gallery-item{aspect-ratio:1;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;cursor:pointer;transition:transform 0.2s,border-color 0.2s;}.gallery-item:hover{transform:scale(1.02);border-color:var(--gold)}.gallery-item img{width:100%;height:100%;object-fit:cover}.gallery-placeholder{font-size:2.5rem;opacity:0.3}.gallery-placeholder-text{font-style:italic;font-size:0.8rem;color:var(--muted);text-align:center;padding:0 1rem}#resenas{background:var(--bg)}.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;}.review-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.5rem;transition:border-color 0.2s;}.review-card:hover{border-color:var(--gold-dk)}.review-stars{color:var(--gold);font-size:0.9rem;margin-bottom:0.6rem;letter-spacing:0.1em}.review-text{font-style:italic;font-size:1rem;color:var(--cream);opacity:0.85;line-height:1.6;margin-bottom:1rem}.review-author{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold-dk);text-transform:uppercase;}#info{background:var(--bg2)}.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem}.info-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:2rem;}.info-card-icon{font-size:2rem;margin-bottom:1rem}.info-card-title{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem;}.info-card p{font-size:0.95rem;color:var(--cream);opacity:0.8;line-height:1.8}.info-card a{color:var(--gold);text-decoration:none}.info-card a:hover{color:var(--gold-lt)}#wa-btn{position:fixed;bottom:24px;left:24px;z-index:9990;background:#25D366;color:white;border:none;border-radius:50px;padding:12px 20px;font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.1em;cursor:pointer;box-shadow:0 4px 20px rgba(37,211,102,0.35);transition:all 0.2s;text-decoration:none;display:flex;align-items:center;gap:8px;}#wa-btn:hover{transform:translateY(-2px);box-shadow:0 6px 25px rgba(37,211,102,0.45)}#redes{background:var(--bg);padding:3rem 1.5rem}.social-row{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}.social-link{font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.2em;color:var(--muted);text-decoration:none;padding:0.6rem 1.2rem;border:1px solid var(--border);border-radius:3px;transition:all 0.2s;display:flex;align-items:center;gap:0.5rem;}.social-link:hover{color:var(--gold-lt);border-color:var(--gold)}footer{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:2rem;font-style:italic;font-size:0.82rem;color:var(--muted);}footer strong{display:block;font-family:'Cinzel',serif;font-style:normal;font-size:0.65rem;letter-spacing:0.3em;color:var(--gold-dk);margin-top:0.4rem;}@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.hero-title,.hero-sub,.hero-info,.hero-cta{animation:fadeUp 0.7s ease both}.hero-sub{animation-delay:0.15s}.hero-info{animation-delay:0.25s}.hero-cta{animation-delay:0.35s}#editor-box::-webkit-scrollbar{width:4px}#editor-box::-webkit-scrollbar-track{background:var(--bg)}#editor-box::-webkit-scrollbar-thumb{background:var(--gold-dk);border-radius:2px}</style></head><body><script>const SITE={nombre:"La Cocina de Mónica",tagline:"Cocina Casera · Hecha con Amor",descripcion:"La fonda de siempre, con el sabor de siempre",horario:"Desayunos: 9:00 am – 12:00 pm\nComida:1:00 pm – 6:00 pm",direccion:"Paricutín 29\nPilares Águilas,Álvaro Obregón\nCDMX 01710",telefono:"55 2683 4246",whatsapp:"5526834246",instagram:"",facebook:"",menu:[{num:"I",titulo:"Huevos",grupos:[],sueltos:["A la mexicana — jitomate, cebolla, chile","Con jamón","Con salchicha"]},{num:"II",titulo:"Omelettes",grupos:[],sueltos:["★ Espinacas con queso","Jamón y queso","Champiñones con queso"]},{num:"III",titulo:"Sandwich",grupos:[],sueltos:["Queso panela","Jamón","Milanesa de pollo o bistec"]},{num:"IV",titulo:"Tortas",grupos:[],sueltos:["Jamón","Salchicha","Pierna","Pechuga asada","Milanesa de pollo o bistec"]},{num:"V",titulo:"Tacos Dorados & Flautas",grupos:[],sueltos:["Pollo","Papa","Queso","Tinga de pollo"]},{num:"VI",titulo:"Tostadas",grupos:[],sueltos:["Tinga de pollo","Pata"]},{num:"VII",titulo:"Chilaquiles",grupos:[],sueltos:["Con huevo","Con pollo","Con carne asada"]},{num:"VIII",titulo:"Enchiladas & Enmoladas",grupos:[],sueltos:["Enchiladas verdes","Enmoladas"]},{num:"IX",titulo:"Tacos",grupos:[],sueltos:["Bistec","Campechanos","Chorizo","Hígado encebollado","✦ Todos incluyen opción: con papas o nopales"]},{num:"X",titulo:"Antojitos",grupos:[],sueltos:["Gorditas de chicharrón","Quesadillas de queso","Quesadillas de papa","Quesadillas choriqueso","Huaraches sencillos","Huaraches con bistec o campechanos"]},{num:"XI",titulo:"Burritos",grupos:[],sueltos:["Huevo con frijoles","Bistec","Pechuga","Chorizo","Choriqueso"]},{num:"XII",titulo:"Bebidas",grupos:[],sueltos:["☕ Café de la olla — receta tradicional","Agua de sabor del día"]},],resenas:[{stars:5,texto:"¡El mejor desayuno de la colonia!Los chilaquiles con bistec están increíbles.",autor:"María G."},{stars:5,texto:"La tinga de pollo es espectacular,y el café de olla me recuerda a casa.",autor:"Carlos R."},{stars:5,texto:"Todo riquísimo y muy buen precio. Los huaraches son mi favorito.",autor:"Fernanda L."},],galeria:[{emoji:"🥚",label:"Huevos & Omelettes"},{emoji:"🌮",label:"Tacos & Flautas"},{emoji:"🍲",label:"Chilaquiles"},{emoji:"⭐",label:"Antojitos"},{emoji:"🫔",label:"Enchiladas & Enmoladas"},{emoji:"🌯",label:"Burritos"},{emoji:"🥖",label:"Tortas & Sandwich"},{emoji:"☕",label:"Bebidas"},]};</script><div id="editor"><div id="editor-box"><h2>✦ Panel de Edición</h2><p class="ed-sub">Edita tu página sin tocar código. Los cambios se aplican al instante.</p><div class="ed-section"><h3>🏠 Negocio</h3><div class="ed-row"><div class="ed-field"><label>Nombre del negocio</label><input id="ed-nombre"></div><div class="ed-field"><label>Tagline / slogan</label><input id="ed-tagline"></div></div><div class="ed-row full"><div class="ed-field"><label>Descripción corta</label><input id="ed-desc"></div></div></div><div class="ed-section"><h3>📍 Contacto & Horarios</h3><div class="ed-row"><div class="ed-field"><label>Horario</label><textarea id="ed-horario" rows="3"></textarea></div><div class="ed-field"><label>Dirección</label><textarea id="ed-direccion" rows="3"></textarea></div></div><div class="ed-row"><div class="ed-field"><label>Teléfono</label><input id="ed-telefono"></div><div class="ed-field"><label>WhatsApp (solo números)</label><input id="ed-whatsapp"></div></div></div><div class="ed-section"><h3>📲 Redes Sociales</h3><div class="ed-row"><div class="ed-field"><label>Instagram</label><input id="ed-instagram"></div><div class="ed-field"><label>Facebook</label><input id="ed-facebook"></div></div></div><div class="ed-section"><h3>⭐ Reseñas</h3><div id="ed-reviews-list"></div><button class="ed-btn save" style="margin-top:8px;font-size:0.65rem;padding:8px 14px" onclick="addReview()">+ Agregar reseña</button></div><div class="ed-btn-row"><button class="ed-btn cancel" onclick="closeEditor()">Cancelar</button><button class="ed-btn save" onclick="saveAndRender()">✓ Guardar cambios</button></div></div></div><section class="hero" id="inicio"><div class="hero-flag"><span style="background:#1A6B3A"></span><span style="background:#F2E8D0"></span><span style="background:#C0392B"></span></div><p class="hero-eyebrow" id="h-eyebrow">Bienvenido</p><h1 class="hero-title" id="h-title">Buenos Días</h1><p class="hero-sub" id="h-sub">Cocina Casera · Hecha con Amor</p><div class="hero-divider"></div><div class="hero-info" id="h-info"></div><div class="hero-cta"><a href="#menu" class="btn-primary">Ver Menú</a><a href="#info" class="btn-outline">Cómo llegar</a></div></section><nav><div class="nav-inner"><a href="#inicio">Inicio</a><span class="nav-dot">·</span><a href="#menu">Menú</a><span class="nav-dot">·</span><a href="#galeria">Galería</a><span class="nav-dot">·</span><a href="#resenas">Reseñas</a><span class="nav-dot">·</span><a href="#info">Horarios</a><span class="nav-dot">·</span><a href="#redes">Redes</a></div></nav><section id="menu"><div class="sec-inner"><p class="sec-eyebrow">Lo que preparamos hoy</p><h2 class="sec-title">Nuestro Menú</h2><div class="sec-rule"></div><div class="menu-grid" id="menu-render"></div></div></section><section id="galeria"><div class="sec-inner"><p class="sec-eyebrow">Nuestros platillos</p><h2 class="sec-title">Galería</h2><div class="sec-rule"></div><div class="gallery-grid" id="gallery-render"></div></div></section><section id="resenas"><div class="sec-inner"><p class="sec-eyebrow">Lo que dicen nuestros clientes</p><h2 class="sec-title">Reseñas</h2><div class="sec-rule"></div><div class="reviews-grid" id="reviews-render"></div></div></section><section id="info"><div class="sec-inner"><p class="sec-eyebrow">Encuéntranos</p><h2 class="sec-title">Horarios & Ubicación</h2><div class="sec-rule"></div><div class="info-grid" id="info-render"></div></div></section><section id="redes"><div class="sec-inner" style="text-align:center"><p class="sec-eyebrow">Síguenos</p><h2 class="sec-title">Redes Sociales</h2><div class="sec-rule"></div><div class="social-row" id="social-render"></div></div></section><footer><span id="footer-text">Hecho con amor y sazón de siempre</span><strong id="footer-brand"></strong></footer><a id="wa-btn" href="#" target="_blank"><svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Cocina de Mónica</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════════ */
+:root {
+  --bg:       #0E0C08;
+  --bg2:      #161310;
+  --gold:     #C9A84C;
+  --gold-lt:  #E8CC7A;
+  --gold-dk:  #8A6820;
+  --cream:    #F2E8D0;
+  --muted:    #7A6A4A;
+  --border:   rgba(201,168,76,0.2);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--cream); font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
+
+/* ═══════════════════════════════════════════
+   BOTÓN EDITAR
+═══════════════════════════════════════════ */
+#edit-toggle {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  background: var(--gold); color: #0E0C08;
+  border: none; border-radius: 50px; padding: 12px 22px;
+  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em;
+  cursor: pointer; box-shadow: 0 4px 20px rgba(201,168,76,0.4); transition: all 0.2s;
+}
+#edit-toggle:hover { background: var(--gold-lt); transform: translateY(-2px); }
+
+/* ═══════════════════════════════════════════
+   PANEL DE EDICIÓN
+═══════════════════════════════════════════ */
+#editor {
+  position: fixed; inset: 0; z-index: 9998;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+  display: none; align-items: center; justify-content: center; padding: 16px;
+}
+#editor.open { display: flex; }
+#editor-box {
+  background: #1A1610; border: 1px solid var(--gold-dk); border-radius: 12px;
+  width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 28px;
+}
+#editor-box h2 { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.2em; color: var(--gold-lt); margin-bottom: 6px; }
+#editor-box .ed-sub { font-style: italic; color: var(--muted); font-size: 0.88rem; margin-bottom: 24px; }
+.ed-section { margin-bottom: 22px; }
+.ed-section h3 {
+  font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.2em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
+  padding-bottom: 6px; border-bottom: 1px solid var(--border);
+}
+.ed-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+.ed-row.full { grid-template-columns: 1fr; }
+.ed-field label { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; font-style: italic; }
+.ed-field input, .ed-field textarea {
+  width: 100%; background: #0E0C08; border: 1px solid var(--border);
+  border-radius: 6px; padding: 8px 10px; color: var(--cream);
+  font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; outline: none; transition: border 0.2s;
+}
+.ed-field input:focus, .ed-field textarea:focus { border-color: var(--gold); }
+.ed-field textarea { resize: vertical; min-height: 60px; }
+.ed-btn-row { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+.ed-btn { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; padding: 10px 20px; border-radius: 6px; cursor: pointer; border: none; transition: all 0.2s; }
+.ed-btn.save { background: var(--gold); color: #0E0C08; }
+.ed-btn.save:hover { background: var(--gold-lt); }
+.ed-btn.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+.ed-btn.cancel:hover { border-color: var(--gold); color: var(--cream); }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 2rem; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 65%);
+}
+.hero-flag { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+.hero-flag span { display: block; width: 50px; height: 5px; border-radius: 2px; }
+.hero-eyebrow { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.4em; color: var(--gold-dk); text-transform: uppercase; margin-bottom: 1rem; }
+.hero-title { font-family: 'Cinzel', serif; font-weight: 600; font-size: clamp(3rem,10vw,6.5rem); letter-spacing: 0.12em; color: var(--gold-lt); line-height: 1; text-shadow: 0 0 60px rgba(201,168,76,0.2); margin-bottom: 0.8rem; }
+.hero-sub { font-style: italic; font-weight: 300; font-size: clamp(1.1rem,3vw,1.6rem); color: var(--muted); letter-spacing: 0.06em; margin-bottom: 2rem; }
+.hero-divider { width: 120px; height: 1px; background: linear-gradient(to right,transparent,var(--gold),transparent); margin: 0 auto 2rem; }
+.hero-info { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; font-size: 0.9rem; color: var(--muted); }
+.hero-info span { display: flex; align-items: center; gap: 0.4rem; }
+.hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.btn-primary { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; padding: 14px 32px; background: var(--gold); color: #0E0C08; border: none; border-radius: 3px; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-block; }
+.btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
+.btn-outline { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; padding: 13px 32px; background: transparent; color: var(--gold); border: 1px solid var(--gold-dk); border-radius: 3px; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-block; }
+.btn-outline:hover { border-color: var(--gold); color: var(--gold-lt); }
+
+/* ═══════════════════════════════════════════
+   NAVEGACIÓN
+═══════════════════════════════════════════ */
+nav { position: sticky; top: 0; z-index: 100; background: rgba(14,12,8,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; }
+.nav-inner { max-width: 900px; margin: 0 auto; display: flex; justify-content: center; flex-wrap: wrap; gap: 0.2rem; }
+nav a { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--muted); text-decoration: none; padding: 0.4rem 0.9rem; border-radius: 2px; transition: color 0.2s, background 0.2s; }
+nav a:hover { color: var(--gold-lt); background: rgba(201,168,76,0.08); }
+.nav-dot { color: var(--border); display: flex; align-items: center; font-size: 0.5rem; }
+
+/* ═══════════════════════════════════════════
+   SECCIONES COMUNES
+═══════════════════════════════════════════ */
+section { padding: 5rem 1.5rem; }
+.sec-inner { max-width: 900px; margin: 0 auto; }
+.sec-eyebrow { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.35em; color: var(--gold-dk); text-transform: uppercase; text-align: center; margin-bottom: 0.8rem; }
+.sec-title { font-family: 'Cinzel', serif; font-size: clamp(1.6rem,5vw,2.4rem); letter-spacing: 0.15em; color: var(--gold-lt); text-align: center; margin-bottom: 0.5rem; }
+.sec-rule { width: 100px; height: 1px; margin: 0 auto 3rem; background: linear-gradient(to right,transparent,var(--gold),transparent); }
+
+/* ═══════════════════════════════════════════
+   MENÚ
+═══════════════════════════════════════════ */
+#menu { background: var(--bg); }
+.menu-section-hdr { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+.menu-num { font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--gold-dk); letter-spacing: 0.15em; }
+.menu-cat-title { font-family: 'Cinzel', serif; font-size: 0.95rem; letter-spacing: 0.18em; color: var(--gold); }
+.menu-rule { flex: 1; height: 1px; background: rgba(201,168,76,0.1); }
+.menu-items { margin-bottom: 2rem; }
+.menu-group-label { font-style: italic; font-size: 0.82rem; color: var(--muted); letter-spacing: 0.1em; margin: 0.8rem 0 0.4rem 0.5rem; }
+.menu-variants { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding: 0.3rem 0 0.6rem 1rem; border-left: 1px solid rgba(201,168,76,0.15); margin-left: 0.4rem; }
+.menu-variant { font-size: 1rem; color: var(--cream); opacity: 0.88; }
+.menu-variant.special { color: var(--gold-lt); font-style: italic; }
+.menu-item-row { display: flex; align-items: baseline; padding: 0.5rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); }
+.menu-item-row:last-child { border-bottom: none; }
+.menu-item-name { font-size: 1.05rem; color: var(--cream); flex: 1; }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 2rem; }
+
+/* ═══════════════════════════════════════════
+   GALERÍA
+═══════════════════════════════════════════ */
+#galeria { background: var(--bg2); }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; }
+.gallery-item { aspect-ratio: 1; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+.gallery-item:hover { transform: scale(1.02); border-color: var(--gold); }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-placeholder { font-size: 2.5rem; opacity: 0.3; }
+.gallery-placeholder-text { font-style: italic; font-size: 0.8rem; color: var(--muted); text-align: center; padding: 0 1rem; }
+
+/* ═══════════════════════════════════════════
+   RESEÑAS
+═══════════════════════════════════════════ */
+#resenas { background: var(--bg); }
+.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 1.5rem; }
+.review-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; transition: border-color 0.2s; }
+.review-card:hover { border-color: var(--gold-dk); }
+.review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.6rem; letter-spacing: 0.1em; }
+.review-text { font-style: italic; font-size: 1rem; color: var(--cream); opacity: 0.85; line-height: 1.6; margin-bottom: 1rem; }
+.review-author { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gold-dk); text-transform: uppercase; }
+
+/* ═══════════════════════════════════════════
+   INFO
+═══════════════════════════════════════════ */
+#info { background: var(--bg2); }
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 2rem; }
+.info-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; }
+.info-card-icon { font-size: 2rem; margin-bottom: 1rem; }
+.info-card-title { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; }
+.info-card p { font-size: 0.95rem; color: var(--cream); opacity: 0.8; line-height: 1.8; }
+.info-card a { color: var(--gold); text-decoration: none; }
+.info-card a:hover { color: var(--gold-lt); }
+
+/* ═══════════════════════════════════════════
+   WHATSAPP
+═══════════════════════════════════════════ */
+#wa-btn {
+  position: fixed; bottom: 24px; left: 24px; z-index: 9990;
+  background: #25D366; color: white; border: none; border-radius: 50px; padding: 12px 20px;
+  font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.1em;
+  cursor: pointer; box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+  transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 8px;
+}
+#wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(37,211,102,0.45); }
+
+/* ═══════════════════════════════════════════
+   REDES & FOOTER
+═══════════════════════════════════════════ */
+#redes { background: var(--bg); padding: 3rem 1.5rem; }
+.social-row { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+.social-link { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--muted); text-decoration: none; padding: 0.6rem 1.2rem; border: 1px solid var(--border); border-radius: 3px; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+.social-link:hover { color: var(--gold-lt); border-color: var(--gold); }
+footer { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-style: italic; font-size: 0.82rem; color: var(--muted); }
+footer strong { display: block; font-family: 'Cinzel', serif; font-style: normal; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--gold-dk); margin-top: 0.4rem; }
+
+/* ═══════════════════════════════════════════
+   ANIMACIONES
+═══════════════════════════════════════════ */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.hero-title { animation: fadeUp 0.7s ease both; }
+.hero-sub    { animation: fadeUp 0.7s ease 0.15s both; }
+.hero-info   { animation: fadeUp 0.7s ease 0.25s both; }
+.hero-cta    { animation: fadeUp 0.7s ease 0.35s both; }
+#editor-box::-webkit-scrollbar { width: 4px; }
+#editor-box::-webkit-scrollbar-track { background: var(--bg); }
+#editor-box::-webkit-scrollbar-thumb { background: var(--gold-dk); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+  DATOS DEL NEGOCIO — edita aquí
+══════════════════════════════════════ -->
+<script>
+const SITE = {
+  nombre:      "La Cocina de Mónica",
+  tagline:     "Cocina Casera · Hecha con Amor",
+  descripcion: "La fonda de siempre, con el sabor de siempre",
+  horario:     "Desayunos: 9:00 am – 12:00 pm\nComida: 1:00 pm – 6:00 pm",
+  direccion:   "Paricutín 29\nPilares Águilas, Álvaro Obregón\nCDMX 01710",
+  telefono:    "55 2683 4246",
+  whatsapp:    "5526834246",
+  instagram:   "",
+  facebook:    "",
+
+  menu: [
+    { num:"I",    titulo:"Huevos",
+      grupos:[], sueltos:["A la mexicana — jitomate, cebolla, chile","Con jamón","Con salchicha"] },
+    { num:"II",   titulo:"Omelettes",
+      grupos:[], sueltos:["★ Espinacas con queso","Jamón y queso","Champiñones con queso"] },
+    { num:"III",  titulo:"Sandwich",
+      grupos:[], sueltos:["Queso panela","Jamón","Milanesa de pollo o bistec"] },
+    { num:"IV",   titulo:"Tortas",
+      grupos:[], sueltos:["Jamón","Salchicha","Pierna","Pechuga asada","Milanesa de pollo o bistec"] },
+    { num:"V",    titulo:"Tacos Dorados & Flautas",
+      grupos:[], sueltos:["Pollo","Papa","Queso","Tinga de pollo"] },
+    { num:"VI",   titulo:"Tostadas",
+      grupos:[], sueltos:["Tinga de pollo","Pata"] },
+    { num:"VII",  titulo:"Chilaquiles",
+      grupos:[], sueltos:["Con huevo","Con pollo","Con carne asada"] },
+    { num:"VIII", titulo:"Enchiladas & Enmoladas",
+      grupos:[], sueltos:["Enchiladas verdes","Enmoladas"] },
+    { num:"IX",   titulo:"Tacos",
+      grupos:[], sueltos:["Bistec","Campechanos","Chorizo","Hígado encebollado","✦ Todos incluyen opción: con papas o nopales"] },
+    { num:"X",    titulo:"Antojitos",
+      grupos:[], sueltos:["Gorditas de chicharrón","Quesadillas de queso","Quesadillas de papa","Quesadillas choriqueso","Huaraches sencillos","Huaraches con bistec o campechanos"] },
+    { num:"XI",   titulo:"Burritos",
+      grupos:[], sueltos:["Huevo con frijoles","Bistec","Pechuga","Chorizo","Choriqueso"] },
+    { num:"XII",  titulo:"Bebidas",
+      grupos:[], sueltos:["☕ Café de la olla — receta tradicional","Agua de sabor del día"] },
+  ],
+
+  resenas: [
+    { stars:5, texto:"¡El mejor desayuno de la colonia! Los chilaquiles con bistec están increíbles.", autor:"María G." },
+    { stars:5, texto:"La tinga de pollo es espectacular, y el café de olla me recuerda a casa.", autor:"Carlos R." },
+    { stars:5, texto:"Todo riquísimo y muy buen precio. Los huaraches son mi favorito.", autor:"Fernanda L." },
+  ],
+
+  galeria: [
+    { emoji:"🥚", label:"Huevos & Omelettes" },
+    { emoji:"🌮", label:"Tacos & Flautas" },
+    { emoji:"🍲", label:"Chilaquiles" },
+    { emoji:"⭐", label:"Antojitos" },
+    { emoji:"🫔", label:"Enchiladas & Enmoladas" },
+    { emoji:"🌯", label:"Burritos" },
+    { emoji:"🥖", label:"Tortas & Sandwich" },
+    { emoji:"☕", label:"Bebidas" },
+  ]
+};
+</script>
+
+<!-- ══════════════════════════════════════
+  PANEL DE EDICIÓN
+══════════════════════════════════════ -->
+<div id="editor">
+  <div id="editor-box">
+    <h2>✦ Panel de Edición</h2>
+    <p class="ed-sub">Edita tu página sin tocar código. Los cambios se aplican al instante.</p>
+
+    <div class="ed-section">
+      <h3>🏠 Negocio</h3>
+      <div class="ed-row">
+        <div class="ed-field"><label>Nombre del negocio</label><input id="ed-nombre"></div>
+        <div class="ed-field"><label>Tagline / slogan</label><input id="ed-tagline"></div>
+      </div>
+      <div class="ed-row full">
+        <div class="ed-field"><label>Descripción corta</label><input id="ed-desc"></div>
+      </div>
+    </div>
+
+    <div class="ed-section">
+      <h3>📍 Contacto & Horarios</h3>
+      <div class="ed-row">
+        <div class="ed-field"><label>Horario</label><textarea id="ed-horario" rows="3"></textarea></div>
+        <div class="ed-field"><label>Dirección</label><textarea id="ed-direccion" rows="3"></textarea></div>
+      </div>
+      <div class="ed-row">
+        <div class="ed-field"><label>Teléfono</label><input id="ed-telefono"></div>
+        <div class="ed-field"><label>WhatsApp (solo números)</label><input id="ed-whatsapp"></div>
+      </div>
+    </div>
+
+    <div class="ed-section">
+      <h3>📲 Redes Sociales</h3>
+      <div class="ed-row">
+        <div class="ed-field"><label>Instagram</label><input id="ed-instagram"></div>
+        <div class="ed-field"><label>Facebook</label><input id="ed-facebook"></div>
+      </div>
+    </div>
+
+    <div class="ed-section">
+      <h3>⭐ Reseñas</h3>
+      <div id="ed-reviews-list"></div>
+      <button class="ed-btn save" style="margin-top:8px;font-size:0.65rem;padding:8px 14px" onclick="addReview()">+ Agregar reseña</button>
+    </div>
+
+    <div class="ed-btn-row">
+      <button class="ed-btn cancel" onclick="closeEditor()">Cancelar</button>
+      <button class="ed-btn save" onclick="saveAndRender()">✓ Guardar cambios</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+  HERO
+══════════════════════════════════════ -->
+<section class="hero" id="inicio">
+  <div class="hero-flag">
+    <span style="background:#1A6B3A"></span>
+    <span style="background:#F2E8D0"></span>
+    <span style="background:#C0392B"></span>
+  </div>
+  <p class="hero-eyebrow" id="h-eyebrow"></p>
+  <h1 class="hero-title" id="h-title"></h1>
+  <p class="hero-sub" id="h-sub"></p>
+  <div class="hero-divider"></div>
+  <div class="hero-info" id="h-info"></div>
+  <div class="hero-cta">
+    <a href="#menu" class="btn-primary">Ver Menú</a>
+    <a href="#info" class="btn-outline">Cómo llegar</a>
+  </div>
+</section>
+
+<!-- NAVEGACIÓN -->
+<nav>
+  <div class="nav-inner">
+    <a href="#inicio">Inicio</a>
+    <span class="nav-dot">·</span>
+    <a href="#menu">Menú</a>
+    <span class="nav-dot">·</span>
+    <a href="#galeria">Galería</a>
+    <span class="nav-dot">·</span>
+    <a href="#resenas">Reseñas</a>
+    <span class="nav-dot">·</span>
+    <a href="#info">Horarios</a>
+    <span class="nav-dot">·</span>
+    <a href="#redes">Redes</a>
+  </div>
+</nav>
+
+<!-- MENÚ -->
+<section id="menu">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Lo que preparamos hoy</p>
+    <h2 class="sec-title">Nuestro Menú</h2>
+    <div class="sec-rule"></div>
+    <div class="menu-grid" id="menu-render"></div>
+  </div>
+</section>
+
+<!-- GALERÍA -->
+<section id="galeria">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Nuestros platillos</p>
+    <h2 class="sec-title">Galería</h2>
+    <div class="sec-rule"></div>
+    <div class="gallery-grid" id="gallery-render"></div>
+  </div>
+</section>
+
+<!-- RESEÑAS -->
+<section id="resenas">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Lo que dicen nuestros clientes</p>
+    <h2 class="sec-title">Reseñas</h2>
+    <div class="sec-rule"></div>
+    <div class="reviews-grid" id="reviews-render"></div>
+  </div>
+</section>
+
+<!-- HORARIOS & UBICACIÓN -->
+<section id="info">
+  <div class="sec-inner">
+    <p class="sec-eyebrow">Encuéntranos</p>
+    <h2 class="sec-title">Horarios & Ubicación</h2>
+    <div class="sec-rule"></div>
+    <div class="info-grid" id="info-render"></div>
+  </div>
+</section>
+
+<!-- REDES SOCIALES -->
+<section id="redes">
+  <div class="sec-inner" style="text-align:center">
+    <p class="sec-eyebrow">Síguenos</p>
+    <h2 class="sec-title">Redes Sociales</h2>
+    <div class="sec-rule"></div>
+    <div class="social-row" id="social-render"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span id="footer-text"></span>
+  <strong id="footer-brand"></strong>
+</footer>
+
+<!-- BOTÓN WHATSAPP -->
+<a id="wa-btn" href="#" target="_blank">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
   Pedir por WhatsApp
-</a><button id="edit-toggle" onclick="openEditor()">✦ Editar página</button><script>function render(){const S=SITE;document.getElementById('h-title').textContent=S.nombre;document.getElementById('h-sub').textContent=S.tagline;document.getElementById('h-eyebrow').textContent=S.descripcion;document.getElementById('h-info').innerHTML=`<span>🕐 ${S.horario.split('\n')[1]||S.horario}</span><span>📍 ${S.direccion.split('\n')[0]}</span><span>📞 ${S.telefono}</span>`;document.getElementById('wa-btn').href=`https://wa.me/${S.whatsapp}?text=Hola!%20Quiero%20hacer%20un%20pedido%20de%20${encodeURIComponent(S.nombre)}`;document.getElementById('footer-text').textContent=S.descripcion;document.getElementById('footer-brand').textContent=S.nombre+' · '+S.tagline;const menuEl=document.getElementById('menu-render');menuEl.innerHTML=S.menu.map(cat=>`<div><div class="menu-section-hdr"><span class="menu-num">${cat.num}</span><span class="menu-cat-title">${cat.titulo}</span><div class="menu-rule"></div></div><div class="menu-items">${cat.grupos.map(g=>`<div class="menu-group-label">${g.label}</div><div class="menu-variants">${g.items.map(i=>`<span class="menu-variant ${i.startsWith('★')?'special':''}">${i}</span>`).join('')}</div>`).join('')}${cat.sueltos.map(i=>`<div class="menu-item-row"><span class="menu-item-name">${i}</span></div>`).join('')}</div></div>`).join('');document.getElementById('gallery-render').innerHTML=S.galeria.map(g=>`<div class="gallery-item"><span class="gallery-placeholder">${g.emoji}</span><span class="gallery-placeholder-text">${g.label}</span></div>`).join('');document.getElementById('reviews-render').innerHTML=S.resenas.map(r=>`<div class="review-card"><div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div><p class="review-text">"${r.texto}"</p><span class="review-author">${r.autor}</span></div>`).join('');document.getElementById('info-render').innerHTML=`<div class="info-card"><div class="info-card-icon">🕐</div><div class="info-card-title">Horarios</div><p>${S.horario.replace(/\n/g,'<br>')}</p></div><div class="info-card"><div class="info-card-icon">📍</div><div class="info-card-title">Dirección</div><p>${S.direccion.replace(/\n/g,'<br>')}</p></div><div class="info-card"><div class="info-card-icon">📞</div><div class="info-card-title">Contacto</div><p>Tel: ${S.telefono}<br><a href="https://wa.me/${S.whatsapp}" target="_blank">WhatsApp: ${S.telefono}</a></p></div>`;const socialLinks=[];if(S.instagram)socialLinks.push(`<a class="social-link" href="https://instagram.com/${S.instagram.replace('@','')}" target="_blank">📷 ${S.instagram}</a>`);if(S.facebook)socialLinks.push(`<a class="social-link" href="https://facebook.com/${S.facebook}" target="_blank">👤 ${S.facebook}</a>`);socialLinks.push(`<a class="social-link" href="https://wa.me/${S.whatsapp}" target="_blank">💬 WhatsApp</a>`);document.getElementById('social-render').innerHTML=socialLinks.join('');}function openEditor(){const pwd=prompt('🔐 Contraseña de edición:');if(pwd!=='MONIC$2026'){if(pwd!==null)alert('Contraseña incorrecta ❌');return;}const S=SITE;document.getElementById('ed-nombre').value=S.nombre;document.getElementById('ed-tagline').value=S.tagline;document.getElementById('ed-desc').value=S.descripcion;document.getElementById('ed-horario').value=S.horario;document.getElementById('ed-direccion').value=S.direccion;document.getElementById('ed-telefono').value=S.telefono;document.getElementById('ed-whatsapp').value=S.whatsapp;document.getElementById('ed-instagram').value=S.instagram;document.getElementById('ed-facebook').value=S.facebook;renderReviewEditor();document.getElementById('editor').classList.add('open');}function closeEditor(){document.getElementById('editor').classList.remove('open');}function renderReviewEditor(){const el=document.getElementById('ed-reviews-list');el.innerHTML=SITE.resenas.map((r,i)=>`<div style="background:#0E0C08;border:1px solid rgba(201,168,76,0.15);border-radius:6px;padding:12px;margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><span style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold-dk)">RESEÑA ${i+1}</span><button onclick="removeReview(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem">✕</button></div><div class="ed-row full"><div class="ed-field"><label>Texto de la reseña</label><textarea id="rev-text-${i}" rows="2">${r.texto}</textarea></div></div><div class="ed-row"><div class="ed-field"><label>Nombre del cliente</label><input id="rev-autor-${i}" value="${r.autor}"></div><div class="ed-field"><label>Estrellas (1-5)</label><input id="rev-stars-${i}" type="number" min="1" max="5" value="${r.stars}"></div></div></div>`).join('');}function addReview(){SITE.resenas.push({stars:5,texto:"",autor:""});renderReviewEditor();}function removeReview(i){SITE.resenas.splice(i,1);renderReviewEditor();}function saveAndRender(){SITE.nombre=document.getElementById('ed-nombre').value;SITE.tagline=document.getElementById('ed-tagline').value;SITE.descripcion=document.getElementById('ed-desc').value;SITE.horario=document.getElementById('ed-horario').value;SITE.direccion=document.getElementById('ed-direccion').value;SITE.telefono=document.getElementById('ed-telefono').value;SITE.whatsapp=document.getElementById('ed-whatsapp').value;SITE.instagram=document.getElementById('ed-instagram').value;SITE.facebook=document.getElementById('ed-facebook').value;SITE.resenas=SITE.resenas.map((_,i)=>({texto:document.getElementById(`rev-text-${i}`).value,autor:document.getElementById(`rev-autor-${i}`).value,stars:parseInt(document.getElementById(`rev-stars-${i}`).value)||5,}));closeEditor();render();}document.getElementById('editor').addEventListener('click',function(e){if(e.target===this)closeEditor();});render();</script></body></html>
+</a>
+
+<!-- BOTÓN EDITAR -->
+<button id="edit-toggle" onclick="openEditor()">✦ Editar página</button>
+
+<!-- ══════════════════════════════════════
+  JAVASCRIPT
+══════════════════════════════════════ -->
+<script>
+
+function render() {
+  const S = SITE;
+
+  // Hero
+  document.getElementById('h-title').textContent   = S.nombre;
+  document.getElementById('h-sub').textContent     = S.tagline;
+  document.getElementById('h-eyebrow').textContent = S.descripcion;
+  document.getElementById('h-info').innerHTML =
+    `<span>🕐 ${S.horario.split('\n')[1] || S.horario}</span>
+     <span>📍 ${S.direccion.split('\n')[0]}</span>
+     <span>📞 ${S.telefono}</span>`;
+
+  // WhatsApp
+  document.getElementById('wa-btn').href =
+    `https://wa.me/${S.whatsapp}?text=Hola!%20Quiero%20hacer%20un%20pedido%20de%20${encodeURIComponent(S.nombre)}`;
+
+  // Footer
+  document.getElementById('footer-text').textContent  = S.descripcion;
+  document.getElementById('footer-brand').textContent = S.nombre + ' · ' + S.tagline;
+
+  // Menú
+  document.getElementById('menu-render').innerHTML = S.menu.map(cat => `
+    <div>
+      <div class="menu-section-hdr">
+        <span class="menu-num">${cat.num}</span>
+        <span class="menu-cat-title">${cat.titulo}</span>
+        <div class="menu-rule"></div>
+      </div>
+      <div class="menu-items">
+        ${cat.grupos.map(g => `
+          <div class="menu-group-label">${g.label}</div>
+          <div class="menu-variants">
+            ${g.items.map(i => `<span class="menu-variant ${i.startsWith('★') ? 'special' : ''}">${i}</span>`).join('')}
+          </div>
+        `).join('')}
+        ${cat.sueltos.map(i => `
+          <div class="menu-item-row">
+            <span class="menu-item-name">${i}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  // Galería
+  document.getElementById('gallery-render').innerHTML = S.galeria.map(g => `
+    <div class="gallery-item">
+      <span class="gallery-placeholder">${g.emoji}</span>
+      <span class="gallery-placeholder-text">${g.label}</span>
+    </div>
+  `).join('');
+
+  // Reseñas
+  document.getElementById('reviews-render').innerHTML = S.resenas.map(r => `
+    <div class="review-card">
+      <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
+      <p class="review-text">"${r.texto}"</p>
+      <span class="review-author">${r.autor}</span>
+    </div>
+  `).join('');
+
+  // Info
+  document.getElementById('info-render').innerHTML = `
+    <div class="info-card">
+      <div class="info-card-icon">🕐</div>
+      <div class="info-card-title">Horarios</div>
+      <p>${S.horario.replace(/\n/g, '<br>')}</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">📍</div>
+      <div class="info-card-title">Dirección</div>
+      <p>${S.direccion.replace(/\n/g, '<br>')}</p>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">📞</div>
+      <div class="info-card-title">Contacto</div>
+      <p>Tel: ${S.telefono}<br>
+        <a href="https://wa.me/${S.whatsapp}" target="_blank">WhatsApp: ${S.telefono}</a>
+      </p>
+    </div>
+  `;
+
+  // Redes
+  const links = [];
+  if (S.instagram) links.push(`<a class="social-link" href="https://instagram.com/${S.instagram.replace('@','')}" target="_blank">📷 ${S.instagram}</a>`);
+  if (S.facebook)  links.push(`<a class="social-link" href="https://facebook.com/${S.facebook}" target="_blank">👤 ${S.facebook}</a>`);
+  links.push(`<a class="social-link" href="https://wa.me/${S.whatsapp}" target="_blank">💬 WhatsApp</a>`);
+  document.getElementById('social-render').innerHTML = links.join('');
+}
+
+function openEditor() {
+  const pwd = prompt('🔐 Contraseña de edición:');
+  if (pwd !== 'MONIC$2026') {
+    if (pwd !== null) alert('Contraseña incorrecta ❌');
+    return;
+  }
+  const S = SITE;
+  document.getElementById('ed-nombre').value    = S.nombre;
+  document.getElementById('ed-tagline').value   = S.tagline;
+  document.getElementById('ed-desc').value      = S.descripcion;
+  document.getElementById('ed-horario').value   = S.horario;
+  document.getElementById('ed-direccion').value = S.direccion;
+  document.getElementById('ed-telefono').value  = S.telefono;
+  document.getElementById('ed-whatsapp').value  = S.whatsapp;
+  document.getElementById('ed-instagram').value = S.instagram;
+  document.getElementById('ed-facebook').value  = S.facebook;
+  renderReviewEditor();
+  document.getElementById('editor').classList.add('open');
+}
+
+function closeEditor() {
+  document.getElementById('editor').classList.remove('open');
+}
+
+function renderReviewEditor() {
+  document.getElementById('ed-reviews-list').innerHTML = SITE.resenas.map((r, i) => `
+    <div style="background:#0E0C08;border:1px solid rgba(201,168,76,0.15);border-radius:6px;padding:12px;margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold-dk)">RESEÑA ${i+1}</span>
+        <button onclick="removeReview(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem">✕</button>
+      </div>
+      <div class="ed-row full">
+        <div class="ed-field">
+          <label>Texto de la reseña</label>
+          <textarea id="rev-text-${i}" rows="2">${r.texto}</textarea>
+        </div>
+      </div>
+      <div class="ed-row">
+        <div class="ed-field">
+          <label>Nombre del cliente</label>
+          <input id="rev-autor-${i}" value="${r.autor}">
+        </div>
+        <div class="ed-field">
+          <label>Estrellas (1-5)</label>
+          <input id="rev-stars-${i}" type="number" min="1" max="5" value="${r.stars}">
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addReview() {
+  SITE.resenas.push({ stars: 5, texto: "", autor: "" });
+  renderReviewEditor();
+}
+
+function removeReview(i) {
+  SITE.resenas.splice(i, 1);
+  renderReviewEditor();
+}
+
+function saveAndRender() {
+  SITE.nombre      = document.getElementById('ed-nombre').value;
+  SITE.tagline     = document.getElementById('ed-tagline').value;
+  SITE.descripcion = document.getElementById('ed-desc').value;
+  SITE.horario     = document.getElementById('ed-horario').value;
+  SITE.direccion   = document.getElementById('ed-direccion').value;
+  SITE.telefono    = document.getElementById('ed-telefono').value;
+  SITE.whatsapp    = document.getElementById('ed-whatsapp').value;
+  SITE.instagram   = document.getElementById('ed-instagram').value;
+  SITE.facebook    = document.getElementById('ed-facebook').value;
+  SITE.resenas = SITE.resenas.map((_, i) => ({
+    texto:  document.getElementById(`rev-text-${i}`).value,
+    autor:  document.getElementById(`rev-autor-${i}`).value,
+    stars:  parseInt(document.getElementById(`rev-stars-${i}`).value) || 5,
+  }));
+  closeEditor();
+  render();
+}
+
+// Cerrar editor al hacer clic fuera
+document.getElementById('editor').addEventListener('click', function(e) {
+  if (e.target === this) closeEditor();
+});
+
+// Iniciar
+render();
+</script>
+</body>
+</html>
