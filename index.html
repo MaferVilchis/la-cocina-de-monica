@@ -519,9 +519,17 @@ function render() {
 }
 
 function openEditor() {
-  const pwd = prompt('🔐 Contraseña de edición:');
-  if (pwd !== 'MONIC$2026') {
-    if (pwd !== null) alert('Contraseña incorrecta ❌');
+  // Credenciales ofuscadas
+  const _u = atob('bW9uaWNh');
+  const _p = atob('TU9OSUMkMjAyNg==');
+
+  const user = prompt('👤 Usuario:');
+  if (user === null) return;
+  const pwd  = prompt('🔐 Contraseña:');
+  if (pwd === null) return;
+
+  if (user !== _u || pwd !== _p) {
+    alert('Usuario o contraseña incorrectos ❌');
     return;
   }
   const S = SITE;
