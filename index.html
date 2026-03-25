@@ -48,16 +48,47 @@ header h1 { font-family: 'Lobster', cursive; font-size: clamp(2.8rem, 9vw, 5.5re
 
 main { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem 5rem; }
 
-.cat-section { margin-bottom: 2.5rem; scroll-margin-top: 55px; animation: fadeUp 0.4s ease both; }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideDown { from { opacity: 0; max-height: 0; } to { opacity: 1; max-height: 1000px; } }
 
-.cat-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-.cat-emoji { width: 50px; height: 50px; border-radius: 14px; background: var(--rojo); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 3px 3px 0 var(--rojo-dk); flex-shrink: 0; }
+/* ACCORDION */
+.cat-section { margin-bottom: 0.6rem; animation: fadeUp 0.4s ease both; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 10px var(--sombra); }
+
+.cat-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 1rem 1.2rem; cursor: pointer;
+  background: var(--blanco);
+  border: 1.5px solid rgba(192,57,43,0.15);
+  border-radius: 14px;
+  transition: background 0.2s, border-color 0.2s;
+  user-select: none;
+}
+.cat-header:hover { background: #fff5f5; border-color: rgba(192,57,43,0.35); }
+.cat-header.open { border-radius: 14px 14px 0 0; border-color: var(--rojo); background: #fff5f5; }
+.cat-header.open.verde { border-color: var(--verde); background: #f0faf4; }
+
+.cat-emoji { width: 46px; height: 46px; border-radius: 12px; background: var(--rojo); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 3px 3px 0 var(--rojo-dk); flex-shrink: 0; }
 .cat-emoji.verde { background: var(--verde); box-shadow: 3px 3px 0 #0f4023; }
-.cat-title { font-family: 'Lobster', cursive; font-size: 1.8rem; color: var(--rojo); line-height: 1; }
+.cat-title { font-family: 'Lobster', cursive; font-size: 1.6rem; color: var(--rojo); line-height: 1; flex: 1; }
 .cat-title.verde { color: var(--verde); }
+.cat-count { font-size: 0.75rem; font-weight: 700; color: var(--gris); background: var(--crema); padding: 0.2rem 0.6rem; border-radius: 999px; }
+.cat-arrow { font-size: 1rem; color: var(--gris); transition: transform 0.3s; flex-shrink: 0; }
+.cat-header.open .cat-arrow { transform: rotate(180deg); }
 
-.items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.7rem; }
+/* ACCORDION BODY */
+.cat-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  background: var(--blanco);
+  border: 1.5px solid var(--rojo);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  padding: 0 1.2rem;
+}
+.cat-body.open { max-height: 1000px; padding: 1rem 1.2rem; }
+.cat-body.verde { border-color: var(--verde); }
+
+.items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.6rem; margin-bottom: 0.2rem; }
 .item-card { background: var(--blanco); border: 1.5px solid rgba(192,57,43,0.13); border-radius: 12px; padding: 0.9rem 1rem; display: flex; align-items: flex-start; gap: 0.6rem; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
 .item-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--sombra); border-color: rgba(192,57,43,0.35); }
 .item-card.special { border-color: rgba(26,107,58,0.3); background: #f0faf4; }
@@ -67,7 +98,7 @@ main { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem 5rem; }
 .item-name.special { color: var(--verde); }
 .item-sub { font-size: 0.78rem; color: var(--gris); margin-top: 0.2rem; }
 .item-note { font-size: 0.8rem; color: var(--cafe); font-style: italic; margin-top: 0.6rem; font-weight: 600; }
-.section-divider { border: none; border-top: 1px dashed rgba(192,57,43,0.2); margin: 2rem 0; }
+.section-divider { display: none; }
 
 #wa-btn { position: fixed; bottom: 80px; left: 20px; z-index: 900; background: #25D366; color: white; border: none; border-radius: 50px; padding: 11px 18px; font-family: 'Nunito', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,0.4); transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 7px; }
 #wa-btn:hover { transform: translateY(-2px); }
@@ -219,37 +250,57 @@ function render() {
 
   document.getElementById('main-content').innerHTML = S.categorias.map((cat, idx) => `
     <div class="cat-section" id="cat-${cat.id}" style="animation-delay:${idx*0.05}s">
-      <div class="cat-header">
+      <div class="cat-header ${cat.verde?'verde':''}" onclick="toggleCat('${cat.id}')">
         <div class="cat-emoji ${cat.verde?'verde':''}">${cat.emoji}</div>
         <h2 class="cat-title ${cat.verde?'verde':''}">${cat.nombre}</h2>
+        <span class="cat-count">${cat.items.length} platillos</span>
+        <span class="cat-arrow">▼</span>
       </div>
-      <div class="items-grid">
-        ${cat.items.map(it => `
-          <div class="item-card ${it.special?'special':''}">
-            <div class="item-dot ${cat.verde?'verde':''}"></div>
-            <div>
-              <div class="item-name ${it.special?'special':''}">${it.special?'⭐ ':''}${it.n}</div>
-              ${it.s ? `<div class="item-sub">${it.s}</div>` : ''}
-            </div>
-          </div>`).join('')}
+      <div class="cat-body ${cat.verde?'verde':''}" id="body-${cat.id}">
+        <div class="items-grid">
+          ${cat.items.map(it => `
+            <div class="item-card ${it.special?'special':''}">
+              <div class="item-dot ${cat.verde?'verde':''}"></div>
+              <div>
+                <div class="item-name ${it.special?'special':''}">${it.special?'⭐ ':''}${it.n}</div>
+                ${it.s ? `<div class="item-sub">${it.s}</div>` : ''}
+              </div>
+            </div>`).join('')}
+        </div>
+        ${cat.nota ? `<p class="item-note">${cat.nota}</p>` : ''}
       </div>
-      ${cat.nota ? `<p class="item-note">${cat.nota}</p>` : ''}
     </div>
-    ${idx < S.categorias.length-1 ? '<hr class="section-divider">' : ''}
   `).join('');
+}
+
+function toggleCat(id) {
+  const header = document.querySelector(`#cat-${id} .cat-header`);
+  const body   = document.getElementById(`body-${id}`);
+  const isOpen = body.classList.contains('open');
+  header.classList.toggle('open', !isOpen);
+  body.classList.toggle('open', !isOpen);
 }
 
 function filterAll(btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.cat-section').forEach(s => s.style.display = '');
+  // Close all
+  document.querySelectorAll('.cat-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.cat-header').forEach(h => h.classList.remove('open'));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function filterCat(id, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.cat-section').forEach(s => s.style.display = s.id === `cat-${id}` ? '' : 'none');
+  // Show all sections but open only the selected one
+  document.querySelectorAll('.cat-section').forEach(s => s.style.display = '');
+  document.querySelectorAll('.cat-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.cat-header').forEach(h => h.classList.remove('open'));
+  const header = document.querySelector(`#cat-${id} .cat-header`);
+  const body   = document.getElementById(`body-${id}`);
+  if (header && body) { header.classList.add('open'); body.classList.add('open'); }
   setTimeout(() => document.getElementById(`cat-${id}`)?.scrollIntoView({behavior:'smooth',block:'start'}), 50);
 }
 
