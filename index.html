@@ -200,7 +200,7 @@ function render() {
   document.getElementById('h-tagline').textContent = S.tagline;
   document.getElementById('h-chips').innerHTML =
     `<span class="chip">🕐 ${S.horario}</span><span class="chip">📍 ${S.direccion.split(',')[0]}</span><span class="chip">📞 ${S.telefono}</span>`;
-  document.getElementById('wa-btn').href = `https://wa.me/${S.whatsapp}`;
+  
   document.getElementById('f-nombre').textContent = S.nombre;
   document.getElementById('f-info').textContent   = `📍 ${S.direccion} · 📞 ${S.telefono}`;
 
@@ -264,7 +264,6 @@ function filterCat(id, btn) {
   setTimeout(() => document.getElementById(`cat-${id}`)?.scrollIntoView({behavior:'smooth',block:'start'}), 50);
 }
 
-});
 render();
 </script>
 </body>
