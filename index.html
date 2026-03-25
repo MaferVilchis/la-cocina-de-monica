@@ -4,614 +4,289 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>La Cocina de Mónica</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lobster&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   VARIABLES & RESET
-═══════════════════════════════════════════ */
 :root {
-  --bg:       #0E0C08;
-  --bg2:      #161310;
-  --gold:     #C9A84C;
-  --gold-lt:  #E8CC7A;
-  --gold-dk:  #8A6820;
-  --cream:    #F2E8D0;
-  --muted:    #7A6A4A;
-  --border:   rgba(201,168,76,0.2);
+  --rojo:    #C0392B;
+  --rojo-dk: #96281B;
+  --verde:   #1A6B3A;
+  --amarillo:#F0C040;
+  --crema:   #FDF6EC;
+  --cafe:    #6D4C2A;
+  --blanco:  #FFFDF9;
+  --gris:    #7F8C8D;
+  --texto:   #2C1A0B;
+  --sombra:  rgba(44,26,11,0.12);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--cream); font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
+body { font-family: 'Nunito', sans-serif; background: var(--crema); color: var(--texto); overflow-x: hidden; }
 
-/* ═══════════════════════════════════════════
-   BOTÓN EDITAR
-═══════════════════════════════════════════ */
-#edit-toggle {
-  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-  background: var(--gold); color: #0E0C08;
-  border: none; border-radius: 50px; padding: 12px 22px;
-  font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 0.15em;
-  cursor: pointer; box-shadow: 0 4px 20px rgba(201,168,76,0.4); transition: all 0.2s;
+header {
+  background: linear-gradient(135deg, var(--rojo-dk) 0%, var(--rojo) 60%, #D4541A 100%);
+  padding: 2.5rem 1.5rem 2rem; text-align: center; position: relative; overflow: hidden;
 }
-#edit-toggle:hover { background: var(--gold-lt); transform: translateY(-2px); }
+header::before {
+  content: ''; position: absolute; inset: 0;
+  background: repeating-linear-gradient(-45deg, transparent, transparent 18px, rgba(255,255,255,0.04) 18px, rgba(255,255,255,0.04) 36px);
+}
+.flag-stripe { display: flex; justify-content: center; gap: 4px; margin-bottom: 1rem; position: relative; }
+.flag-stripe span { width: 44px; height: 5px; border-radius: 3px; }
+.header-inner { position: relative; max-width: 700px; margin: 0 auto; }
+.header-badge { display: inline-block; background: var(--amarillo); color: var(--cafe); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 1rem; border-radius: 999px; margin-bottom: 0.8rem; }
+header h1 { font-family: 'Lobster', cursive; font-size: clamp(2.8rem, 9vw, 5.5rem); color: #fff; line-height: 1; text-shadow: 3px 3px 0 rgba(0,0,0,0.2); margin-bottom: 0.3rem; }
+.header-tagline { color: rgba(255,255,255,0.85); font-size: 1rem; font-weight: 300; margin-bottom: 1.2rem; }
+.header-chips { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+.chip { background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(255,255,255,0.25); padding: 0.3rem 0.9rem; border-radius: 999px; font-size: 0.8rem; font-weight: 600; }
 
-/* ═══════════════════════════════════════════
-   PANEL DE EDICIÓN
-═══════════════════════════════════════════ */
-#editor {
-  position: fixed; inset: 0; z-index: 9998;
-  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
-  display: none; align-items: center; justify-content: center; padding: 16px;
-}
+.filter-bar { position: sticky; top: 0; z-index: 50; background: var(--blanco); border-bottom: 3px solid var(--rojo); overflow-x: auto; scrollbar-width: none; }
+.filter-bar::-webkit-scrollbar { display: none; }
+.filter-inner { display: flex; min-width: max-content; padding: 0 1rem; }
+.filter-btn { background: none; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--gris); padding: 0.85rem 1.1rem; white-space: nowrap; border-bottom: 3px solid transparent; margin-bottom: -3px; transition: color 0.2s, border-color 0.2s; }
+.filter-btn:hover { color: var(--rojo); }
+.filter-btn.active { color: var(--rojo); border-bottom-color: var(--rojo); }
+
+main { max-width: 900px; margin: 0 auto; padding: 2rem 1.2rem 5rem; }
+
+.cat-section { margin-bottom: 2.5rem; scroll-margin-top: 55px; animation: fadeUp 0.4s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+.cat-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+.cat-emoji { width: 50px; height: 50px; border-radius: 14px; background: var(--rojo); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 3px 3px 0 var(--rojo-dk); flex-shrink: 0; }
+.cat-emoji.verde { background: var(--verde); box-shadow: 3px 3px 0 #0f4023; }
+.cat-title { font-family: 'Lobster', cursive; font-size: 1.8rem; color: var(--rojo); line-height: 1; }
+.cat-title.verde { color: var(--verde); }
+
+.items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.7rem; }
+.item-card { background: var(--blanco); border: 1.5px solid rgba(192,57,43,0.13); border-radius: 12px; padding: 0.9rem 1rem; display: flex; align-items: flex-start; gap: 0.6rem; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
+.item-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--sombra); border-color: rgba(192,57,43,0.35); }
+.item-card.special { border-color: rgba(26,107,58,0.3); background: #f0faf4; }
+.item-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rojo); flex-shrink: 0; margin-top: 6px; }
+.item-dot.verde { background: var(--verde); }
+.item-name { font-size: 0.92rem; font-weight: 700; color: var(--texto); line-height: 1.3; }
+.item-name.special { color: var(--verde); }
+.item-sub { font-size: 0.78rem; color: var(--gris); margin-top: 0.2rem; }
+.item-note { font-size: 0.8rem; color: var(--cafe); font-style: italic; margin-top: 0.6rem; font-weight: 600; }
+.section-divider { border: none; border-top: 1px dashed rgba(192,57,43,0.2); margin: 2rem 0; }
+
+#wa-btn { position: fixed; bottom: 80px; left: 20px; z-index: 900; background: #25D366; color: white; border: none; border-radius: 50px; padding: 11px 18px; font-family: 'Nunito', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(37,211,102,0.4); transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 7px; }
+#wa-btn:hover { transform: translateY(-2px); }
+#edit-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 900; background: var(--rojo); color: white; border: none; border-radius: 50px; padding: 11px 20px; font-family: 'Nunito', sans-serif; font-size: 0.78rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 16px rgba(192,57,43,0.4); transition: all 0.2s; }
+#edit-toggle:hover { background: var(--rojo-dk); transform: translateY(-2px); }
+
+#editor { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; padding: 16px; }
 #editor.open { display: flex; }
-#editor-box {
-  background: #1A1610; border: 1px solid var(--gold-dk); border-radius: 12px;
-  width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 28px;
-}
-#editor-box h2 { font-family: 'Cinzel', serif; font-size: 1.1rem; letter-spacing: 0.2em; color: var(--gold-lt); margin-bottom: 6px; }
-#editor-box .ed-sub { font-style: italic; color: var(--muted); font-size: 0.88rem; margin-bottom: 24px; }
-.ed-section { margin-bottom: 22px; }
-.ed-section h3 {
-  font-family: 'Cinzel', serif; font-size: 0.72rem; letter-spacing: 0.2em;
-  color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
-  padding-bottom: 6px; border-bottom: 1px solid var(--border);
-}
+#editor-box { background: #fff; border-radius: 16px; width: 100%; max-width: 660px; max-height: 90vh; overflow-y: auto; padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+#editor-box h2 { font-family: 'Lobster', cursive; font-size: 1.8rem; color: var(--rojo); margin-bottom: 4px; }
+#editor-box .ed-sub { color: var(--gris); font-size: 0.88rem; margin-bottom: 20px; }
+.ed-section { margin-bottom: 20px; }
+.ed-section h3 { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--cafe); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid var(--crema); }
 .ed-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
 .ed-row.full { grid-template-columns: 1fr; }
-.ed-field label { display: block; font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; font-style: italic; }
-.ed-field input, .ed-field textarea {
-  width: 100%; background: #0E0C08; border: 1px solid var(--border);
-  border-radius: 6px; padding: 8px 10px; color: var(--cream);
-  font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; outline: none; transition: border 0.2s;
-}
-.ed-field input:focus, .ed-field textarea:focus { border-color: var(--gold); }
-.ed-field textarea { resize: vertical; min-height: 60px; }
+.ed-field label { display: block; font-size: 0.75rem; font-weight: 700; color: var(--gris); margin-bottom: 4px; }
+.ed-field input, .ed-field textarea { width: 100%; background: var(--crema); border: 1.5px solid rgba(192,57,43,0.2); border-radius: 8px; padding: 8px 10px; color: var(--texto); font-family: 'Nunito', sans-serif; font-size: 0.92rem; outline: none; transition: border 0.2s; }
+.ed-field input:focus, .ed-field textarea:focus { border-color: var(--rojo); }
 .ed-btn-row { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
-.ed-btn { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.15em; padding: 10px 20px; border-radius: 6px; cursor: pointer; border: none; transition: all 0.2s; }
-.ed-btn.save { background: var(--gold); color: #0E0C08; }
-.ed-btn.save:hover { background: var(--gold-lt); }
-.ed-btn.cancel { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-.ed-btn.cancel:hover { border-color: var(--gold); color: var(--cream); }
+.ed-btn { font-family: 'Nunito', sans-serif; font-size: 0.82rem; font-weight: 700; padding: 10px 22px; border-radius: 8px; cursor: pointer; border: none; transition: all 0.2s; }
+.ed-btn.save { background: var(--rojo); color: white; }
+.ed-btn.save:hover { background: var(--rojo-dk); }
+.ed-btn.cancel { background: var(--crema); color: var(--gris); }
 
-/* ═══════════════════════════════════════════
-   HERO
-═══════════════════════════════════════════ */
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  padding: 2rem; position: relative; overflow: hidden;
-}
-.hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 40%, rgba(201,168,76,0.08) 0%, transparent 65%);
-}
-.hero-flag { display: flex; justify-content: center; margin-bottom: 1.5rem; }
-.hero-flag span { display: block; width: 50px; height: 5px; border-radius: 2px; }
-.hero-eyebrow { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.4em; color: var(--gold-dk); text-transform: uppercase; margin-bottom: 1rem; }
-.hero-title { font-family: 'Cinzel', serif; font-weight: 600; font-size: clamp(3rem,10vw,6.5rem); letter-spacing: 0.12em; color: var(--gold-lt); line-height: 1; text-shadow: 0 0 60px rgba(201,168,76,0.2); margin-bottom: 0.8rem; }
-.hero-sub { font-style: italic; font-weight: 300; font-size: clamp(1.1rem,3vw,1.6rem); color: var(--muted); letter-spacing: 0.06em; margin-bottom: 2rem; }
-.hero-divider { width: 120px; height: 1px; background: linear-gradient(to right,transparent,var(--gold),transparent); margin: 0 auto 2rem; }
-.hero-info { display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center; font-size: 0.9rem; color: var(--muted); }
-.hero-info span { display: flex; align-items: center; gap: 0.4rem; }
-.hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
-.btn-primary { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; padding: 14px 32px; background: var(--gold); color: #0E0C08; border: none; border-radius: 3px; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-block; }
-.btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
-.btn-outline { font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.2em; padding: 13px 32px; background: transparent; color: var(--gold); border: 1px solid var(--gold-dk); border-radius: 3px; cursor: pointer; transition: all 0.25s; text-decoration: none; display: inline-block; }
-.btn-outline:hover { border-color: var(--gold); color: var(--gold-lt); }
+footer { background: var(--texto); color: rgba(255,255,255,0.6); text-align: center; padding: 2rem 1rem; font-size: 0.82rem; }
+.footer-logo { font-family: 'Lobster', cursive; font-size: 1.6rem; color: var(--amarillo); display: block; margin-bottom: 0.3rem; }
 
-/* ═══════════════════════════════════════════
-   NAVEGACIÓN
-═══════════════════════════════════════════ */
-nav { position: sticky; top: 0; z-index: 100; background: rgba(14,12,8,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0.7rem 1rem; }
-.nav-inner { max-width: 900px; margin: 0 auto; display: flex; justify-content: center; flex-wrap: wrap; gap: 0.2rem; }
-nav a { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--muted); text-decoration: none; padding: 0.4rem 0.9rem; border-radius: 2px; transition: color 0.2s, background 0.2s; }
-nav a:hover { color: var(--gold-lt); background: rgba(201,168,76,0.08); }
-.nav-dot { color: var(--border); display: flex; align-items: center; font-size: 0.5rem; }
-
-/* ═══════════════════════════════════════════
-   SECCIONES COMUNES
-═══════════════════════════════════════════ */
-section { padding: 5rem 1.5rem; }
-.sec-inner { max-width: 900px; margin: 0 auto; }
-.sec-eyebrow { font-family: 'Cinzel', serif; font-size: 0.6rem; letter-spacing: 0.35em; color: var(--gold-dk); text-transform: uppercase; text-align: center; margin-bottom: 0.8rem; }
-.sec-title { font-family: 'Cinzel', serif; font-size: clamp(1.6rem,5vw,2.4rem); letter-spacing: 0.15em; color: var(--gold-lt); text-align: center; margin-bottom: 0.5rem; }
-.sec-rule { width: 100px; height: 1px; margin: 0 auto 3rem; background: linear-gradient(to right,transparent,var(--gold),transparent); }
-
-/* ═══════════════════════════════════════════
-   MENÚ
-═══════════════════════════════════════════ */
-#menu { background: var(--bg); }
-.menu-section-hdr { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
-.menu-num { font-family: 'Cinzel', serif; font-size: 0.6rem; color: var(--gold-dk); letter-spacing: 0.15em; }
-.menu-cat-title { font-family: 'Cinzel', serif; font-size: 0.95rem; letter-spacing: 0.18em; color: var(--gold); }
-.menu-rule { flex: 1; height: 1px; background: rgba(201,168,76,0.1); }
-.menu-items { margin-bottom: 2rem; }
-.menu-group-label { font-style: italic; font-size: 0.82rem; color: var(--muted); letter-spacing: 0.1em; margin: 0.8rem 0 0.4rem 0.5rem; }
-.menu-variants { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding: 0.3rem 0 0.6rem 1rem; border-left: 1px solid rgba(201,168,76,0.15); margin-left: 0.4rem; }
-.menu-variant { font-size: 1rem; color: var(--cream); opacity: 0.88; }
-.menu-variant.special { color: var(--gold-lt); font-style: italic; }
-.menu-item-row { display: flex; align-items: baseline; padding: 0.5rem 0; border-bottom: 1px solid rgba(201,168,76,0.06); }
-.menu-item-row:last-child { border-bottom: none; }
-.menu-item-name { font-size: 1.05rem; color: var(--cream); flex: 1; }
-.menu-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap: 2rem; }
-
-/* ═══════════════════════════════════════════
-   GALERÍA
-═══════════════════════════════════════════ */
-#galeria { background: var(--bg2); }
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 12px; }
-.gallery-item { aspect-ratio: 1; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.5rem; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
-.gallery-item:hover { transform: scale(1.02); border-color: var(--gold); }
-.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
-.gallery-placeholder { font-size: 2.5rem; opacity: 0.3; }
-.gallery-placeholder-text { font-style: italic; font-size: 0.8rem; color: var(--muted); text-align: center; padding: 0 1rem; }
-
-/* ═══════════════════════════════════════════
-   RESEÑAS
-═══════════════════════════════════════════ */
-#resenas { background: var(--bg); }
-.reviews-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 1.5rem; }
-.review-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; transition: border-color 0.2s; }
-.review-card:hover { border-color: var(--gold-dk); }
-.review-stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 0.6rem; letter-spacing: 0.1em; }
-.review-text { font-style: italic; font-size: 1rem; color: var(--cream); opacity: 0.85; line-height: 1.6; margin-bottom: 1rem; }
-.review-author { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--gold-dk); text-transform: uppercase; }
-
-/* ═══════════════════════════════════════════
-   INFO
-═══════════════════════════════════════════ */
-#info { background: var(--bg2); }
-.info-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 2rem; }
-.info-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; }
-.info-card-icon { font-size: 2rem; margin-bottom: 1rem; }
-.info-card-title { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; }
-.info-card p { font-size: 0.95rem; color: var(--cream); opacity: 0.8; line-height: 1.8; }
-.info-card a { color: var(--gold); text-decoration: none; }
-.info-card a:hover { color: var(--gold-lt); }
-
-/* ═══════════════════════════════════════════
-   WHATSAPP
-═══════════════════════════════════════════ */
-#wa-btn {
-  position: fixed; bottom: 24px; left: 24px; z-index: 9990;
-  background: #25D366; color: white; border: none; border-radius: 50px; padding: 12px 20px;
-  font-family: 'Cinzel', serif; font-size: 0.7rem; letter-spacing: 0.1em;
-  cursor: pointer; box-shadow: 0 4px 20px rgba(37,211,102,0.35);
-  transition: all 0.2s; text-decoration: none; display: flex; align-items: center; gap: 8px;
-}
-#wa-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(37,211,102,0.45); }
-
-/* ═══════════════════════════════════════════
-   REDES & FOOTER
-═══════════════════════════════════════════ */
-#redes { background: var(--bg); padding: 3rem 1.5rem; }
-.social-row { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
-.social-link { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--muted); text-decoration: none; padding: 0.6rem 1.2rem; border: 1px solid var(--border); border-radius: 3px; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
-.social-link:hover { color: var(--gold-lt); border-color: var(--gold); }
-footer { background: var(--bg2); border-top: 1px solid var(--border); text-align: center; padding: 2rem; font-style: italic; font-size: 0.82rem; color: var(--muted); }
-footer strong { display: block; font-family: 'Cinzel', serif; font-style: normal; font-size: 0.65rem; letter-spacing: 0.3em; color: var(--gold-dk); margin-top: 0.4rem; }
-
-/* ═══════════════════════════════════════════
-   ANIMACIONES
-═══════════════════════════════════════════ */
-@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.hero-title { animation: fadeUp 0.7s ease both; }
-.hero-sub    { animation: fadeUp 0.7s ease 0.15s both; }
-.hero-info   { animation: fadeUp 0.7s ease 0.25s both; }
-.hero-cta    { animation: fadeUp 0.7s ease 0.35s both; }
 #editor-box::-webkit-scrollbar { width: 4px; }
-#editor-box::-webkit-scrollbar-track { background: var(--bg); }
-#editor-box::-webkit-scrollbar-thumb { background: var(--gold-dk); border-radius: 2px; }
+#editor-box::-webkit-scrollbar-thumb { background: var(--rojo); border-radius: 2px; }
+@media (max-width: 480px) { .items-grid { grid-template-columns: 1fr 1fr; } .ed-row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-  DATOS DEL NEGOCIO — edita aquí
-══════════════════════════════════════ -->
 <script>
 const SITE = {
-  nombre:      "La Cocina de Mónica",
-  tagline:     "Cocina Casera · Hecha con Amor",
-  descripcion: "La fonda de siempre, con el sabor de siempre",
-  horario:     "Desayunos: 9:00 am – 12:00 pm\nComida: 1:00 pm – 6:00 pm",
-  direccion:   "Paricutín 29\nPilares Águilas, Álvaro Obregón\nCDMX 01710",
-  telefono:    "55 2683 4246",
-  whatsapp:    "5526834246",
-  instagram:   "",
-  facebook:    "",
-
-  menu: [
-    { num:"I",    titulo:"Huevos",
-      grupos:[], sueltos:["A la mexicana — jitomate, cebolla, chile","Con jamón","Con salchicha"] },
-    { num:"II",   titulo:"Omelettes",
-      grupos:[], sueltos:["★ Espinacas con queso","Jamón y queso","Champiñones con queso"] },
-    { num:"III",  titulo:"Sandwich",
-      grupos:[], sueltos:["Queso panela","Jamón","Milanesa de pollo o bistec"] },
-    { num:"IV",   titulo:"Tortas",
-      grupos:[], sueltos:["Jamón","Salchicha","Pierna","Pechuga asada","Milanesa de pollo o bistec"] },
-    { num:"V",    titulo:"Tacos Dorados & Flautas",
-      grupos:[], sueltos:["Pollo","Papa","Queso","Tinga de pollo"] },
-    { num:"VI",   titulo:"Tostadas",
-      grupos:[], sueltos:["Tinga de pollo","Pata"] },
-    { num:"VII",  titulo:"Chilaquiles",
-      grupos:[], sueltos:["Con huevo","Con pollo","Con carne asada"] },
-    { num:"VIII", titulo:"Enchiladas & Enmoladas",
-      grupos:[], sueltos:["Enchiladas verdes","Enmoladas"] },
-    { num:"IX",   titulo:"Tacos",
-      grupos:[], sueltos:["Bistec","Campechanos","Chorizo","Hígado encebollado","✦ Todos incluyen opción: con papas o nopales"] },
-    { num:"X",    titulo:"Antojitos",
-      grupos:[], sueltos:["Gorditas de chicharrón","Quesadillas de queso","Quesadillas de papa","Quesadillas choriqueso","Huaraches sencillos","Huaraches con bistec o campechanos"] },
-    { num:"XI",   titulo:"Burritos",
-      grupos:[], sueltos:["Huevo con frijoles","Bistec","Pechuga","Chorizo","Choriqueso"] },
-    { num:"XII",  titulo:"Bebidas",
-      grupos:[], sueltos:["☕ Café de la olla — receta tradicional","Agua de sabor del día"] },
-  ],
-
-  resenas: [
-    { stars:5, texto:"¡El mejor desayuno de la colonia! Los chilaquiles con bistec están increíbles.", autor:"María G." },
-    { stars:5, texto:"La tinga de pollo es espectacular, y el café de olla me recuerda a casa.", autor:"Carlos R." },
-    { stars:5, texto:"Todo riquísimo y muy buen precio. Los huaraches son mi favorito.", autor:"Fernanda L." },
-  ],
-
-  galeria: [
-    { emoji:"🥚", label:"Huevos & Omelettes" },
-    { emoji:"🌮", label:"Tacos & Flautas" },
-    { emoji:"🍲", label:"Chilaquiles" },
-    { emoji:"⭐", label:"Antojitos" },
-    { emoji:"🫔", label:"Enchiladas & Enmoladas" },
-    { emoji:"🌯", label:"Burritos" },
-    { emoji:"🥖", label:"Tortas & Sandwich" },
-    { emoji:"☕", label:"Bebidas" },
+  nombre:    "La Cocina de Mónica",
+  tagline:   "Cocina Casera · Hecha con Amor",
+  horario:   "Desayunos 9–12 · Comida 1–6 pm",
+  direccion: "Paricutín 29, Pilares Águilas, CDMX",
+  telefono:  "55 2683 4246",
+  whatsapp:  "5526834246",
+  instagram: "",
+  facebook:  "",
+  categorias: [
+    { id:"huevos",      emoji:"🥚", nombre:"Huevos",
+      items:[ {n:"A la mexicana",s:"jitomate, cebolla, chile"}, {n:"Con jamón"}, {n:"Con salchicha"} ] },
+    { id:"omelettes",   emoji:"🍳", nombre:"Omelettes",
+      items:[ {n:"Espinacas con queso",special:true}, {n:"Jamón y queso"}, {n:"Champiñones con queso"} ] },
+    { id:"sandwich",    emoji:"🥪", nombre:"Sandwich",
+      items:[ {n:"Queso panela"}, {n:"Jamón"}, {n:"Milanesa de pollo o bistec"} ] },
+    { id:"tortas",      emoji:"🥖", nombre:"Tortas",
+      items:[ {n:"Jamón"},{n:"Salchicha"},{n:"Pierna"},{n:"Pechuga asada"},{n:"Milanesa de pollo o bistec"} ] },
+    { id:"tacos-dorados", emoji:"🌮", nombre:"Tacos Dorados & Flautas",
+      items:[ {n:"Pollo"},{n:"Papa"},{n:"Queso"},{n:"Tinga de pollo"} ] },
+    { id:"tostadas",    emoji:"🫓", nombre:"Tostadas",
+      items:[ {n:"Tinga de pollo"},{n:"Pata"} ] },
+    { id:"chilaquiles", emoji:"🍲", nombre:"Chilaquiles",
+      items:[ {n:"Con huevo"},{n:"Con pollo"},{n:"Con carne asada"} ] },
+    { id:"enchiladas",  emoji:"🫔", nombre:"Enchiladas & Enmoladas",
+      items:[ {n:"Enchiladas verdes"},{n:"Enmoladas"} ] },
+    { id:"tacos",       emoji:"🌯", nombre:"Tacos",
+      items:[ {n:"Bistec"},{n:"Campechanos"},{n:"Chorizo"},{n:"Hígado encebollado"} ],
+      nota:"✦ Todos incluyen opción: con papas o nopales" },
+    { id:"antojitos",   emoji:"⭐", nombre:"Antojitos",
+      items:[ {n:"Gorditas de chicharrón"},{n:"Quesadillas de queso"},{n:"Quesadillas de papa"},{n:"Quesadillas choriqueso"},{n:"Huaraches sencillos"},{n:"Huaraches con bistec o campechanos"} ] },
+    { id:"burritos",    emoji:"🌯", nombre:"Burritos",
+      items:[ {n:"Huevo con frijoles"},{n:"Bistec"},{n:"Pechuga"},{n:"Chorizo"},{n:"Choriqueso"} ] },
+    { id:"bebidas",     emoji:"☕", nombre:"Bebidas", verde:true,
+      items:[ {n:"Café de la olla",s:"receta tradicional"},{n:"Agua de sabor",s:"del día"} ] },
   ]
 };
 </script>
 
-<!-- ══════════════════════════════════════
-  PANEL DE EDICIÓN
-══════════════════════════════════════ -->
-<div id="editor">
-  <div id="editor-box">
-    <h2>✦ Panel de Edición</h2>
-    <p class="ed-sub">Edita tu página sin tocar código. Los cambios se aplican al instante.</p>
-
-    <div class="ed-section">
-      <h3>🏠 Negocio</h3>
-      <div class="ed-row">
-        <div class="ed-field"><label>Nombre del negocio</label><input id="ed-nombre"></div>
-        <div class="ed-field"><label>Tagline / slogan</label><input id="ed-tagline"></div>
-      </div>
-      <div class="ed-row full">
-        <div class="ed-field"><label>Descripción corta</label><input id="ed-desc"></div>
-      </div>
-    </div>
-
-    <div class="ed-section">
-      <h3>📍 Contacto & Horarios</h3>
-      <div class="ed-row">
-        <div class="ed-field"><label>Horario</label><textarea id="ed-horario" rows="3"></textarea></div>
-        <div class="ed-field"><label>Dirección</label><textarea id="ed-direccion" rows="3"></textarea></div>
-      </div>
-      <div class="ed-row">
-        <div class="ed-field"><label>Teléfono</label><input id="ed-telefono"></div>
-        <div class="ed-field"><label>WhatsApp (solo números)</label><input id="ed-whatsapp"></div>
-      </div>
-    </div>
-
-    <div class="ed-section">
-      <h3>📲 Redes Sociales</h3>
-      <div class="ed-row">
-        <div class="ed-field"><label>Instagram</label><input id="ed-instagram"></div>
-        <div class="ed-field"><label>Facebook</label><input id="ed-facebook"></div>
-      </div>
-    </div>
-
-    <div class="ed-section">
-      <h3>⭐ Reseñas</h3>
-      <div id="ed-reviews-list"></div>
-      <button class="ed-btn save" style="margin-top:8px;font-size:0.65rem;padding:8px 14px" onclick="addReview()">+ Agregar reseña</button>
-    </div>
-
-    <div class="ed-btn-row">
-      <button class="ed-btn cancel" onclick="closeEditor()">Cancelar</button>
-      <button class="ed-btn save" onclick="saveAndRender()">✓ Guardar cambios</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-  HERO
-══════════════════════════════════════ -->
-<section class="hero" id="inicio">
-  <div class="hero-flag">
+<header>
+  <div class="flag-stripe">
     <span style="background:#1A6B3A"></span>
     <span style="background:#F2E8D0"></span>
     <span style="background:#C0392B"></span>
   </div>
-  <p class="hero-eyebrow" id="h-eyebrow"></p>
-  <h1 class="hero-title" id="h-title"></h1>
-  <p class="hero-sub" id="h-sub"></p>
-  <div class="hero-divider"></div>
-  <div class="hero-info" id="h-info"></div>
-  <div class="hero-cta">
-    <a href="#menu" class="btn-primary">Ver Menú</a>
-    <a href="#info" class="btn-outline">Cómo llegar</a>
+  <div class="header-inner">
+    <span class="header-badge">🍽️ Cocina Casera · CDMX</span>
+    <h1 id="h-nombre"></h1>
+    <p class="header-tagline" id="h-tagline"></p>
+    <div class="header-chips" id="h-chips"></div>
   </div>
-</section>
+</header>
 
-<!-- NAVEGACIÓN -->
-<nav>
-  <div class="nav-inner">
-    <a href="#inicio">Inicio</a>
-    <span class="nav-dot">·</span>
-    <a href="#menu">Menú</a>
-    <span class="nav-dot">·</span>
-    <a href="#galeria">Galería</a>
-    <span class="nav-dot">·</span>
-    <a href="#resenas">Reseñas</a>
-    <span class="nav-dot">·</span>
-    <a href="#info">Horarios</a>
-    <span class="nav-dot">·</span>
-    <a href="#redes">Redes</a>
-  </div>
-</nav>
+<div class="filter-bar"><div class="filter-inner" id="filter-inner"></div></div>
 
-<!-- MENÚ -->
-<section id="menu">
-  <div class="sec-inner">
-    <p class="sec-eyebrow">Lo que preparamos hoy</p>
-    <h2 class="sec-title">Nuestro Menú</h2>
-    <div class="sec-rule"></div>
-    <div class="menu-grid" id="menu-render"></div>
-  </div>
-</section>
+<main id="main-content"></main>
 
-<!-- GALERÍA -->
-<section id="galeria">
-  <div class="sec-inner">
-    <p class="sec-eyebrow">Nuestros platillos</p>
-    <h2 class="sec-title">Galería</h2>
-    <div class="sec-rule"></div>
-    <div class="gallery-grid" id="gallery-render"></div>
-  </div>
-</section>
-
-<!-- RESEÑAS -->
-<section id="resenas">
-  <div class="sec-inner">
-    <p class="sec-eyebrow">Lo que dicen nuestros clientes</p>
-    <h2 class="sec-title">Reseñas</h2>
-    <div class="sec-rule"></div>
-    <div class="reviews-grid" id="reviews-render"></div>
-  </div>
-</section>
-
-<!-- HORARIOS & UBICACIÓN -->
-<section id="info">
-  <div class="sec-inner">
-    <p class="sec-eyebrow">Encuéntranos</p>
-    <h2 class="sec-title">Horarios & Ubicación</h2>
-    <div class="sec-rule"></div>
-    <div class="info-grid" id="info-render"></div>
-  </div>
-</section>
-
-<!-- REDES SOCIALES -->
-<section id="redes">
-  <div class="sec-inner" style="text-align:center">
-    <p class="sec-eyebrow">Síguenos</p>
-    <h2 class="sec-title">Redes Sociales</h2>
-    <div class="sec-rule"></div>
-    <div class="social-row" id="social-render"></div>
-  </div>
-</section>
-
-<!-- FOOTER -->
 <footer>
-  <span id="footer-text"></span>
-  <strong id="footer-brand"></strong>
+  <span class="footer-logo" id="f-nombre"></span>
+  <p id="f-info"></p>
+  <p style="margin-top:0.5rem;font-size:0.78rem;opacity:0.5">¡Gracias por preferirnos! 🌮❤️</p>
 </footer>
 
-<!-- BOTÓN WHATSAPP -->
 <a id="wa-btn" href="#" target="_blank">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-  </svg>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
   Pedir por WhatsApp
 </a>
 
-<!-- BOTÓN EDITAR -->
-<button id="edit-toggle" onclick="openEditor()">✦ Editar página</button>
+<button id="edit-toggle" onclick="openEditor()">✏️ Editar</button>
 
-<!-- ══════════════════════════════════════
-  JAVASCRIPT
-══════════════════════════════════════ -->
+<div id="editor">
+  <div id="editor-box">
+    <h2>✏️ Editar Página</h2>
+    <p class="ed-sub">Los cambios se aplican al instante.</p>
+    <div class="ed-section">
+      <h3>🏠 Negocio</h3>
+      <div class="ed-row">
+        <div class="ed-field"><label>Nombre</label><input id="ed-nombre"></div>
+        <div class="ed-field"><label>Tagline</label><input id="ed-tagline"></div>
+      </div>
+      <div class="ed-row">
+        <div class="ed-field"><label>Horario</label><input id="ed-horario"></div>
+        <div class="ed-field"><label>Teléfono</label><input id="ed-telefono"></div>
+      </div>
+      <div class="ed-row full">
+        <div class="ed-field"><label>Dirección</label><input id="ed-direccion"></div>
+      </div>
+      <div class="ed-row">
+        <div class="ed-field"><label>WhatsApp (solo números)</label><input id="ed-whatsapp"></div>
+        <div class="ed-field"><label>Instagram</label><input id="ed-instagram"></div>
+      </div>
+    </div>
+    <div class="ed-btn-row">
+      <button class="ed-btn cancel" onclick="closeEditor()">Cancelar</button>
+      <button class="ed-btn save" onclick="saveAndRender()">✓ Guardar</button>
+    </div>
+  </div>
+</div>
+
 <script>
-
 function render() {
   const S = SITE;
+  document.getElementById('h-nombre').textContent  = S.nombre;
+  document.getElementById('h-tagline').textContent = S.tagline;
+  document.getElementById('h-chips').innerHTML =
+    `<span class="chip">🕐 ${S.horario}</span><span class="chip">📍 ${S.direccion.split(',')[0]}</span><span class="chip">📞 ${S.telefono}</span>`;
+  document.getElementById('wa-btn').href = `https://wa.me/${S.whatsapp}?text=Hola!%20Quiero%20hacer%20un%20pedido%20😊`;
+  document.getElementById('f-nombre').textContent = S.nombre;
+  document.getElementById('f-info').textContent   = `📍 ${S.direccion} · 📞 ${S.telefono}`;
 
-  // Hero
-  document.getElementById('h-title').textContent   = S.nombre;
-  document.getElementById('h-sub').textContent     = S.tagline;
-  document.getElementById('h-eyebrow').textContent = S.descripcion;
-  document.getElementById('h-info').innerHTML =
-    `<span>🕐 ${S.horario.split('\n')[1] || S.horario}</span>
-     <span>📍 ${S.direccion.split('\n')[0]}</span>
-     <span>📞 ${S.telefono}</span>`;
+  document.getElementById('filter-inner').innerHTML =
+    `<button class="filter-btn active" onclick="filterAll(this)">🍽️ Todo</button>` +
+    S.categorias.map(c => `<button class="filter-btn" onclick="filterCat('${c.id}',this)">${c.emoji} ${c.nombre}</button>`).join('');
 
-  // WhatsApp
-  document.getElementById('wa-btn').href =
-    `https://wa.me/${S.whatsapp}?text=Hola!%20Quiero%20hacer%20un%20pedido%20de%20${encodeURIComponent(S.nombre)}`;
-
-  // Footer
-  document.getElementById('footer-text').textContent  = S.descripcion;
-  document.getElementById('footer-brand').textContent = S.nombre + ' · ' + S.tagline;
-
-  // Menú
-  document.getElementById('menu-render').innerHTML = S.menu.map(cat => `
-    <div>
-      <div class="menu-section-hdr">
-        <span class="menu-num">${cat.num}</span>
-        <span class="menu-cat-title">${cat.titulo}</span>
-        <div class="menu-rule"></div>
+  document.getElementById('main-content').innerHTML = S.categorias.map((cat, idx) => `
+    <div class="cat-section" id="cat-${cat.id}" style="animation-delay:${idx*0.05}s">
+      <div class="cat-header">
+        <div class="cat-emoji ${cat.verde?'verde':''}">${cat.emoji}</div>
+        <h2 class="cat-title ${cat.verde?'verde':''}">${cat.nombre}</h2>
       </div>
-      <div class="menu-items">
-        ${cat.grupos.map(g => `
-          <div class="menu-group-label">${g.label}</div>
-          <div class="menu-variants">
-            ${g.items.map(i => `<span class="menu-variant ${i.startsWith('★') ? 'special' : ''}">${i}</span>`).join('')}
-          </div>
-        `).join('')}
-        ${cat.sueltos.map(i => `
-          <div class="menu-item-row">
-            <span class="menu-item-name">${i}</span>
-          </div>
-        `).join('')}
+      <div class="items-grid">
+        ${cat.items.map(it => `
+          <div class="item-card ${it.special?'special':''}">
+            <div class="item-dot ${cat.verde?'verde':''}"></div>
+            <div>
+              <div class="item-name ${it.special?'special':''}">${it.special?'⭐ ':''}${it.n}</div>
+              ${it.s ? `<div class="item-sub">${it.s}</div>` : ''}
+            </div>
+          </div>`).join('')}
       </div>
+      ${cat.nota ? `<p class="item-note">${cat.nota}</p>` : ''}
     </div>
+    ${idx < S.categorias.length-1 ? '<hr class="section-divider">' : ''}
   `).join('');
+}
 
-  // Galería
-  document.getElementById('gallery-render').innerHTML = S.galeria.map(g => `
-    <div class="gallery-item">
-      <span class="gallery-placeholder">${g.emoji}</span>
-      <span class="gallery-placeholder-text">${g.label}</span>
-    </div>
-  `).join('');
+function filterAll(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.cat-section').forEach(s => s.style.display = '');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  // Reseñas
-  document.getElementById('reviews-render').innerHTML = S.resenas.map(r => `
-    <div class="review-card">
-      <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
-      <p class="review-text">"${r.texto}"</p>
-      <span class="review-author">${r.autor}</span>
-    </div>
-  `).join('');
-
-  // Info
-  document.getElementById('info-render').innerHTML = `
-    <div class="info-card">
-      <div class="info-card-icon">🕐</div>
-      <div class="info-card-title">Horarios</div>
-      <p>${S.horario.replace(/\n/g, '<br>')}</p>
-    </div>
-    <div class="info-card">
-      <div class="info-card-icon">📍</div>
-      <div class="info-card-title">Dirección</div>
-      <p>${S.direccion.replace(/\n/g, '<br>')}</p>
-    </div>
-    <div class="info-card">
-      <div class="info-card-icon">📞</div>
-      <div class="info-card-title">Contacto</div>
-      <p>Tel: ${S.telefono}<br>
-        <a href="https://wa.me/${S.whatsapp}" target="_blank">WhatsApp: ${S.telefono}</a>
-      </p>
-    </div>
-  `;
-
-  // Redes
-  const links = [];
-  if (S.instagram) links.push(`<a class="social-link" href="https://instagram.com/${S.instagram.replace('@','')}" target="_blank">📷 ${S.instagram}</a>`);
-  if (S.facebook)  links.push(`<a class="social-link" href="https://facebook.com/${S.facebook}" target="_blank">👤 ${S.facebook}</a>`);
-  links.push(`<a class="social-link" href="https://wa.me/${S.whatsapp}" target="_blank">💬 WhatsApp</a>`);
-  document.getElementById('social-render').innerHTML = links.join('');
+function filterCat(id, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.cat-section').forEach(s => s.style.display = s.id === `cat-${id}` ? '' : 'none');
+  setTimeout(() => document.getElementById(`cat-${id}`)?.scrollIntoView({behavior:'smooth',block:'start'}), 50);
 }
 
 function openEditor() {
-  // Credenciales ofuscadas
   const _u = atob('bW9uaWNh');
   const _p = atob('TU9OSUMkMjAyNg==');
-
   const user = prompt('👤 Usuario:');
   if (user === null) return;
-  const pwd  = prompt('🔐 Contraseña:');
+  const pwd = prompt('🔐 Contraseña:');
   if (pwd === null) return;
-
-  if (user !== _u || pwd !== _p) {
-    alert('Usuario o contraseña incorrectos ❌');
-    return;
-  }
+  if (user !== _u || pwd !== _p) { alert('Usuario o contraseña incorrectos ❌'); return; }
   const S = SITE;
   document.getElementById('ed-nombre').value    = S.nombre;
   document.getElementById('ed-tagline').value   = S.tagline;
-  document.getElementById('ed-desc').value      = S.descripcion;
   document.getElementById('ed-horario').value   = S.horario;
-  document.getElementById('ed-direccion').value = S.direccion;
   document.getElementById('ed-telefono').value  = S.telefono;
+  document.getElementById('ed-direccion').value = S.direccion;
   document.getElementById('ed-whatsapp').value  = S.whatsapp;
   document.getElementById('ed-instagram').value = S.instagram;
-  document.getElementById('ed-facebook').value  = S.facebook;
-  renderReviewEditor();
   document.getElementById('editor').classList.add('open');
 }
 
-function closeEditor() {
-  document.getElementById('editor').classList.remove('open');
-}
-
-function renderReviewEditor() {
-  document.getElementById('ed-reviews-list').innerHTML = SITE.resenas.map((r, i) => `
-    <div style="background:#0E0C08;border:1px solid rgba(201,168,76,0.15);border-radius:6px;padding:12px;margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <span style="font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;color:var(--gold-dk)">RESEÑA ${i+1}</span>
-        <button onclick="removeReview(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem">✕</button>
-      </div>
-      <div class="ed-row full">
-        <div class="ed-field">
-          <label>Texto de la reseña</label>
-          <textarea id="rev-text-${i}" rows="2">${r.texto}</textarea>
-        </div>
-      </div>
-      <div class="ed-row">
-        <div class="ed-field">
-          <label>Nombre del cliente</label>
-          <input id="rev-autor-${i}" value="${r.autor}">
-        </div>
-        <div class="ed-field">
-          <label>Estrellas (1-5)</label>
-          <input id="rev-stars-${i}" type="number" min="1" max="5" value="${r.stars}">
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function addReview() {
-  SITE.resenas.push({ stars: 5, texto: "", autor: "" });
-  renderReviewEditor();
-}
-
-function removeReview(i) {
-  SITE.resenas.splice(i, 1);
-  renderReviewEditor();
-}
+function closeEditor() { document.getElementById('editor').classList.remove('open'); }
 
 function saveAndRender() {
-  SITE.nombre      = document.getElementById('ed-nombre').value;
-  SITE.tagline     = document.getElementById('ed-tagline').value;
-  SITE.descripcion = document.getElementById('ed-desc').value;
-  SITE.horario     = document.getElementById('ed-horario').value;
-  SITE.direccion   = document.getElementById('ed-direccion').value;
-  SITE.telefono    = document.getElementById('ed-telefono').value;
-  SITE.whatsapp    = document.getElementById('ed-whatsapp').value;
-  SITE.instagram   = document.getElementById('ed-instagram').value;
-  SITE.facebook    = document.getElementById('ed-facebook').value;
-  SITE.resenas = SITE.resenas.map((_, i) => ({
-    texto:  document.getElementById(`rev-text-${i}`).value,
-    autor:  document.getElementById(`rev-autor-${i}`).value,
-    stars:  parseInt(document.getElementById(`rev-stars-${i}`).value) || 5,
-  }));
+  SITE.nombre    = document.getElementById('ed-nombre').value;
+  SITE.tagline   = document.getElementById('ed-tagline').value;
+  SITE.horario   = document.getElementById('ed-horario').value;
+  SITE.telefono  = document.getElementById('ed-telefono').value;
+  SITE.direccion = document.getElementById('ed-direccion').value;
+  SITE.whatsapp  = document.getElementById('ed-whatsapp').value;
+  SITE.instagram = document.getElementById('ed-instagram').value;
   closeEditor();
   render();
 }
 
-// Cerrar editor al hacer clic fuera
-document.getElementById('editor').addEventListener('click', function(e) {
-  if (e.target === this) closeEditor();
-});
-
-// Iniciar
+document.getElementById('editor').addEventListener('click', function(e) { if(e.target===this) closeEditor(); });
 render();
 </script>
 </body>
